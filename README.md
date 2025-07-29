@@ -37,7 +37,7 @@ All of the AI models are downloaded from [Hugging Face](https://huggingface.co) 
 1. Please ensure that the above [**Default System Requirements**](https://github.com/ugo-emekauwa/private-ai-setup-dream-guide#default-system-requirements) have been met.
 2. Git clone or download the **Private AI Setup Dream Guide for Demos** repository:
   ```
-  git clone https://github.com/ugo-emekauwa/private-ai-setup-dream-guide
+  git clone https://github.com/earguedast/AI-BOT-Nvidia
   ```
 3. Change directories to the private-ai-setup-dream-guide folder.
   ```
