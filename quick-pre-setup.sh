@@ -11,8 +11,8 @@ echo "Setting up the Script Variables..."
 set -o nounset
 disable_apparmor=true
 disable_firewall=true
-enable_rootless_docker=false
-enable_system_startup_for_rootless_docker=false
+enable_rootless_docker=true
+enable_system_startup_for_rootless_docker=true
 
 # Setup the Log File
 echo "Setting up the Log File..."
