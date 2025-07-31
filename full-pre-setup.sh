@@ -12,8 +12,8 @@ echo "Setting up the Script Variables..."
 set -o nounset
 disable_apparmor=true
 disable_firewall=true
-enable_rootless_docker=false
-enable_system_startup_for_rootless_docker=false
+enable_rootless_docker=true
+enable_system_startup_for_rootless_docker=true
 chat_model_1_huggingface_download_source="RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8-dynamic"
 chat_model_1_vllm_container_image="vllm/vllm-openai:v0.8.5.post1"
 chat_model_2_huggingface_download_source="Qwen/Qwen2.5-Coder-32B-Instruct-AWQ"
