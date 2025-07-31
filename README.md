@@ -53,7 +53,7 @@ All of the AI models are downloaded from [Hugging Face](https://huggingface.co) 
 
   - Option 2 - **Quick Pre-Setup**: This will install only the software packages and drivers needed to quickly begin deploying the AI models. None of the default AI models or Docker containers will be downloaded initially. Depending on your Internet connection speed, the downloads may take about 10-15 mins. The AI models and Docker containers will be downloaded later as each type of AI model is deployed via the corresponding script. **`WARNING:`** A server reboot is performed at the end of the script, so please save any work before starting.
   ```
-  chmod +x full-pre-setup.sh
+  chmod +x quick-pre-setup.sh
   ./quick-pre-setup.sh
   ```
 5. Choose and run a model setup deployment script. There are several options based on what type of model you want to run:
