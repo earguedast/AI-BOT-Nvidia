@@ -59,11 +59,13 @@ All of the AI models are downloaded from [Hugging Face](https://huggingface.co) 
 5. Choose and run a model setup deployment script. There are several options based on what type of model you want to run:
   - **Single Chat Model Setup**: This script sets up an environment with one chat LLM. Meta Llama 3.1 8B Instruct has been chosen as the default chat AI model. Open WebUI provides a user-friendly GUI web interface with inferencing by vLLM.
   ```
-  ./chat-model-single-setup.sh
+     chmod +x chat-model-single-setup.sh
+    ./chat-model-single-setup.sh
   ```
 
   - **Dual Chat Model Setup**: This script sets up an environment with two chat LLMs. Meta Llama 3.1 8B Instruct and Qwen 2.5 Coder 32B Instruct have been chosen as the default chat AI models. Open WebUI provides a user-friendly GUI web interface with inferencing by vLLM.
   ```
+    chmod +x chat-model-dual-setup.sh
   ./chat-model-dual-setup.sh
   ```
 
