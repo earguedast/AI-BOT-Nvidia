@@ -51,7 +51,7 @@ nvidia-smi
 sudo apt install nvidia-fabricmanager-570
 sudo systemctl enable nvidia-fabricmanager.service
 sudo systemctl start nvidia-fabricmanager.service
-pip install --upgrade vllm
+#pip install --upgrade vllm
 pip install accelerate
 pip install tensorflow
 pip install torch
