@@ -34,16 +34,21 @@ All of the AI models are downloaded from [Hugging Face](https://huggingface.co) 
 - 205 GB of storage space. The stated storage space is based on deploying all of the chosen default AI models and Docker containers. The AI models can be easily changed in the scripts to support different storage space availability. Lower storage requirements will work if not all AI models and Docker containers are deployed.
 
 ## How To Use
-1. Please ensure that the above [**Default System Requirements**](https://github.com/ugo-emekauwa/private-ai-setup-dream-guide#default-system-requirements) have been met.
-2. Git clone or download the **Private AI Setup Dream Guide for Demos** repository:
+   
+1. Git clone or download the **Private AI Setup Dream Guide for Demos** repository:
   ```
   git clone https://github.com/earguedast/AI-BOT-Nvidia
   ```
-3. Change directories to the private-ai-setup-dream-guide folder.
+2. Change directories to the private-ai-setup-dream-guide folder.
   ```
   cd AI-BOT-Nvidia
   ```
-4. Choose and run a pre-setup script to install all of the software packages and drivers needed to run the AI models. You have two options:
+3. Install Nvidia-drivers
+ ```
+  chmod +x install-nvidia-drivers.sh
+  ./install-nvidia-drivers.sh
+  ```
+5. Choose and run a pre-setup script to install all of the software packages and drivers needed to run the AI models. You have two options:
 
   - Option 1 - **Full Pre-Setup**: This will install the software packages and drivers needed to begin deploying the AI models. In addition, all of the default AI models and all of the Docker containers needed to run the AI models will also be downloaded. Depending on your Internet connection speed, the downloads may take a while, about 40-60 mins. Using the Full Pre-Setup option will take more time upfront, but will save you time later. **`WARNING:`** A server reboot is performed at the end of the script, so please save any work before starting.
   ```
