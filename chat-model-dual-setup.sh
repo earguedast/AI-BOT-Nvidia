@@ -24,6 +24,7 @@ chat_model_2_name="Qwen 2.5 Coder, 32B"
 chat_model_2_huggingface_download_source="Qwen/Qwen2.5-Coder-32B-Instruct-AWQ"
 chat_model_2_vllm_max_context_length=8192
 chat_model_2_vllm_gpu_memory_utilization=0.9
+chat_model_2_vllm_gpu_count=8
 chat_model_2_vllm_container_image="vllm/vllm-openai:v0.8.5.post1"
 chat_model_2_vllm_container_host_port=8002
 open_webui_container_image="ghcr.io/open-webui/open-webui:cuda"
@@ -171,7 +172,7 @@ chat_model_2_vllm_container_args_base=(
     -p $chat_model_2_vllm_container_host_port:8000
     --runtime nvidia
     --gpus all
-    --tensor-parallel-size [8]
+    --tensor-parallel-size=$chat_model_2_vllm_gpu_count
     -v $HOME/ai_models:/ai_models
     --ipc=host
     $chat_model_2_vllm_container_image
