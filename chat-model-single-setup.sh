@@ -29,6 +29,8 @@ hugging_face_access_token=
 
 # Start the AI Chat Model Single Setup
 echo "Starting the AI Chat Model Single Setup..."
+pip install --upgrade vllm
+pip install accelerate
 
 # Create the 'ai_models' Folder in the $HOME Directory
 echo "Creating the 'ai_models' Folder in the $HOME Directory..."
