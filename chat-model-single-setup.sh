@@ -86,6 +86,7 @@ chat_model_1_vllm_container_args_base=(
     -p $chat_model_1_vllm_container_host_port:8000
     --runtime nvidia
     --gpus all
+    --tensor-parallel-size 8
     -v $HOME/ai_models:/ai_models
     --ipc=host
     $chat_model_1_vllm_container_image
