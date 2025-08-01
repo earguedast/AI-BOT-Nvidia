@@ -17,6 +17,7 @@ chat_model_1_name="Meta Llama 3.1, 8B"
 chat_model_1_huggingface_download_source="RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8-dynamic"
 chat_model_1_vllm_max_context_length=8192
 chat_model_1_vllm_gpu_memory_utilization=0.9
+chat_model_1_vllm_gpu_count=8
 chat_model_1_vllm_container_image="vllm/vllm-openai:v0.8.5.post1"
 chat_model_1_vllm_container_host_port=8001
 open_webui_container_image="ghcr.io/open-webui/open-webui:cuda"
@@ -88,7 +89,7 @@ chat_model_1_vllm_container_args_base=(
     -p $chat_model_1_vllm_container_host_port:8000
     --runtime nvidia
     --gpus all
-    --tensor-parallel-size [8]
+    --tensor-parallel-size=$chat_model_1_vllm_gpu_count
     -v $HOME/ai_models:/ai_models
     --ipc=host
     $chat_model_1_vllm_container_image
