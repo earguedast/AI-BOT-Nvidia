@@ -64,9 +64,11 @@ else
     echo "Installing the NVIDIA Driver..."
     sudo apt-get install -y cuda-drivers-570
 fi
+nvidia-smi
 sudo apt install nvidia-fabricmanager-570
 sudo systemctl enable nvidia-fabricmanager.service
 sudo systemctl start nvidia-fabricmanager.service
+systemctl status nvidia-fabricmanager.service
 
 # Uninstall Previous Docker Installations
 echo "Uninstalling Previous Docker Installations..."
