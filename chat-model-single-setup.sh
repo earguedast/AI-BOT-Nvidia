@@ -93,6 +93,7 @@ chat_model_1_vllm_container_args_base=(
     --model /ai_models/$chat_model_1_huggingface_download_local_sub_directory
     --served-model-name "$chat_model_1_name"
     --gpu_memory_utilization=$chat_model_1_vllm_gpu_memory_utilization
+    --tensor-parallel-size 8
 )
 
 chat_model_1_vllm_container_args_with_max_context_length=(
