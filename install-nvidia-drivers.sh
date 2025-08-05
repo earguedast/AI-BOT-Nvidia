@@ -34,8 +34,8 @@ fi
 echo "Installing the NVIDIA CUDA Toolkit..."
 sudo apt install -y linux-headers-$(uname -r) build-essential
 sudo apt update -y
-sudo apt install -y linux-headers-$(uname -r) build-essential dkms
-sudo apt update -y
+#sudo apt install -y linux-headers-$(uname -r) build-essential dkms
+#sudo apt update -y
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-keyring_1.1-1_all.deb
 sudo dpkg -i cuda-keyring_1.1-1_all.deb
 sudo apt-get update
