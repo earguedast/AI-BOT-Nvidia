@@ -43,10 +43,15 @@ All of the AI models are downloaded from [Hugging Face](https://huggingface.co) 
   ```
   cd AI-BOT-Nvidia
   ```
-3. Install Nvidia-drivers
+3. Install Nvidia-drivers ubuntu 2204
  ```
-  chmod +x install-nvidia-drivers.sh
-  ./install-nvidia-drivers.sh
+  chmod +x install-nvidia-drivers-2204.sh
+  ./install-nvidia-drivers-2204.sh
+  ```
+Install Nvidia-drivers ubuntu 2404
+ ```
+  chmod +x install-nvidia-driver-2404s.sh
+  ./install-nvidia-drivers-2404.sh
   ```
 5. Choose and run a pre-setup script to install all of the software packages and drivers needed to run the AI models. You have two options:
 
