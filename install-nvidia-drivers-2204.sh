@@ -56,9 +56,9 @@ sudo systemctl start nvidia-fabricmanager.service
 #pip install --upgrade vllm
 sudo apt install python3-pip -y
 
-pip install accelerate
-pip install tensorflow
-pip install torch
+# pip install accelerate
+# pip install tensorflow
+# pip install torch
 nvidia-smi topo -m
 echo "Drivers and libs are installed"
 systemctl status nvidia-fabricmanager.service
