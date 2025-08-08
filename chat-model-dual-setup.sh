@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # Private AI Setup Dream Guide - AI Chat Model Dual Setup
-# Written by Ugo Emekauwa (uemekauw@cisco.com, uemekauwa@gmail.com)
-# GitHub Repository: https://github.com/ugo-emekauwa/private-ai-setup-dream-guide
 # Summary: This script sets up an environment with two chat LLMs.
 ## Meta Llama 3.1 8B Instruct and Qwen 2.5 Coder 32B Instruct have been chosen as the default chat AI models.
 ## The choice of AI models and settings can be changed using the script variables.
@@ -20,8 +18,8 @@ chat_model_1_vllm_gpu_memory_utilization=0.3
 chat_model_1_vllm_gpu_count=8
 chat_model_1_vllm_container_image="vllm/vllm-openai:v0.8.5.post1"
 chat_model_1_vllm_container_host_port=8001
-chat_model_2_name="Qwen 2.5 Coder, 32B"
-chat_model_2_huggingface_download_source="Qwen/Qwen2.5-Coder-32B-Instruct-AWQ"
+chat_model_2_name="Qwen 3, 32B"
+chat_model_2_huggingface_download_source="RedHatAI/Qwen3-32B-FP8-dynamic"
 chat_model_2_vllm_max_context_length=8192
 chat_model_2_vllm_gpu_memory_utilization=0.9
 chat_model_2_vllm_gpu_count=8

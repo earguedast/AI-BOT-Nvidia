@@ -1,10 +1,7 @@
 #!/bin/bash
 
 # Private AI Setup Dream Guide - AI Chat Model Single Setup
-# Written by Ugo Emekauwa (uemekauw@cisco.com, uemekauwa@gmail.com)
-# GitHub Repository: https://github.com/ugo-emekauwa/private-ai-setup-dream-guide
 # Summary: This script sets up an environment with one chat LLM.
-## Meta Llama 3.1 8B Instruct has been chosen as the default chat AI model.
 ## The choice of AI models and settings can be changed using the script variables.
 ## Open WebUI serves as a frontend user-friendly GUI interface for interacting with AI models.
 ## vLLM serves as the backend inference engine for the AI model.
@@ -31,7 +28,7 @@ hugging_face_access_token=
 # Start the AI Chat Model Single Setup
 echo "Starting the AI Chat Model Single Setup..."
 #pip install --upgrade vllm
-pip install accelerate
+#pip install accelerate
 
 # Create the 'ai_models' Folder in the $HOME Directory
 echo "Creating the 'ai_models' Folder in the $HOME Directory..."

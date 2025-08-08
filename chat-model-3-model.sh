@@ -2,7 +2,6 @@
 
 # Private AI Setup Dream Guide - AI Chat Model Dual Setup
 # Summary: This script sets up an environment with 3 chat LLMs.
-## Meta Llama 3.1 8B Instruct and Qwen 2.5 Coder 32B Instruct have been chosen as the default chat AI models.
 ## The choice of AI models and settings can be changed using the script variables.
 ## Open WebUI serves as a frontend user-friendly GUI interface for interacting with AI models.
 ## vLLM serves as the backend inference engine for the AI models.
@@ -16,8 +15,8 @@ target_host=127.0.0.1
 # chat_model_3_huggingface_download_source="RedHatAI/gemma-2-9b-it-FP8"
 # chat_model_3_name="Qwen 3, 4B"
 # chat_model_3_huggingface_download_source="RedHatAI/Qwen3-4B-FP8-dynamic"
-chat_model_3_name="Qwen 2.5, 1.5B"
-chat_model_3_huggingface_download_source="Qwen/Qwen2.5-1.5B-Instruct"
+chat_model_3_name="IBM Granite 3.1, 2B"
+chat_model_3_huggingface_download_source="RedHatAI/granite-3.1-2b-instruct-FP8-dynamic"
 chat_model_3_vllm_max_context_length=8192
 chat_model_3_vllm_gpu_memory_utilization=0.9
 chat_model_3_vllm_gpu_count=8
@@ -52,15 +51,13 @@ chat_model_3_huggingface_download_local_sub_directory="${chat_model_3_huggingfac
 # Download the AI Chat Models
 echo "Downloading the AI Chat Models..."
 if $hugging_face_access_token; then
-   
 	HF_TOKEN=$hugging_face_access_token HF_HUB_ENABLE_HF_TRANSFER=1 hf download $chat_model_3_huggingface_download_source --local-dir $HOME/ai_models/$chat_model_3_huggingface_download_local_sub_directory
 else
-    
 	HF_HUB_ENABLE_HF_TRANSFER=1 hf download $chat_model_3_huggingface_download_source --local-dir $HOME/ai_models/$chat_model_3_huggingface_download_local_sub_directory
 fi
 
 # Stop and Remove Preexisting Private AI Containers
-private_ai_containers=("vllm-chat-model-3")
+private_ai_containers=("open-webui-1" "vllm-chat-model-3")
 if [ "$stop_and_remove_preexisting_private_ai_containers" = "true" ]; then
     echo "Stopping Preexisting Private AI Containers..."
     if docker info -f "{{println .SecurityOptions}}" 2>/dev/null | grep -q rootless; then
@@ -129,53 +126,6 @@ else
     exit 1
 fi
 
-# Setup the vLLM Container with Chat Model 3 ($chat_model_3_name)
-echo "Setting up the vLLM Container with $chat_model_3_name..."
-chat_model_3_vllm_container_args_base=(
-    -d
-    --name vllm-chat-model-3
-    -p $chat_model_3_vllm_container_host_port:8000
-    --runtime nvidia
-    --gpus all
-    -v $HOME/ai_models:/ai_models
-    --ipc=host
-    $chat_model_3_vllm_container_image
-    --model /ai_models/$chat_model_3_huggingface_download_local_sub_directory
-	--tensor-parallel-size $chat_model_3_vllm_gpu_count
-    --served-model-name "$chat_model_3_name"
-    --gpu_memory_utilization=$chat_model_3_vllm_gpu_memory_utilization
-)
-
-chat_model_3_vllm_container_args_with_max_context_length=(
-    "${chat_model_3_vllm_container_args_base[@]}"
-    --max_model_len=$chat_model_1_vllm_max_context_length
-)
-chat_model_3_vllm_container_args_without_max_context_length=(
-    "${chat_model_3_vllm_container_args_base[@]}"
-)
-if [ -z "$chat_model_3_vllm_max_context_length" ]; then
-    echo "No Max Context Length Has Been Provided, the Model Default Will Be Used..."
-    if docker info -f "{{println .SecurityOptions}}" 2>/dev/null | grep -q rootless; then
-        docker run "${chat_model_3_vllm_container_args_without_max_context_length[@]}"
-    else
-        sudo docker run "${chat_model_3_vllm_container_args_without_max_context_length[@]}"
-    fi
-else
-    echo "A Max Context Length of $chat_model_3_vllm_max_context_length Has Been Provided..."
-    if docker info -f "{{println .SecurityOptions}}" 2>/dev/null | grep -q rootless; then
-        docker run "${chat_model_3_vllm_container_args_with_max_context_length[@]}"
-    else
-        sudo docker run "${chat_model_3_vllm_container_args_with_max_context_length[@]}"
-    fi
-fi
-
-if [[ $? -eq 0 ]]; then
-    echo "The vLLM Container with $chat_model_3_name has Started..."
-else
-    echo "ERROR: The vLLM Container with $chat_model_3_name Failed to Start!"
-    exit 1
-fi
-
 # Wait for the AI Model to Load ($chat_model_3_name)
 echo "The AI Model Loading Timeout is Set to $ai_model_loading_timeout Second(s)."
 echo "Waiting for $chat_model_3_name to Load..."
@@ -213,8 +163,8 @@ open_webui_container_args_base=(
     --gpus all
     -e WEBUI_AUTH="false"
     -e WEBUI_NAME="Private AI"
-    -e OPENAI_API_BASE_URLS="http://$open_webui_container_specific_target_host:$chat_model_1_vllm_container_host_port/v1;http://$open_webui_container_specific_target_host:$chat_model_2_vllm_container_host_port/v1"
-    -e OPENAI_API_KEY="vllm-chat-model-1-sample-key;vllm-chat-model-2-sample-key"
+    -e OPENAI_API_BASE_URLS="http://$open_webui_container_specific_target_host:$chat_model_1_vllm_container_host_port/v1;http://$open_webui_container_specific_target_host:$chat_model_2_vllm_container_host_port/v1;http://$open_webui_container_specific_target_host:$chat_model_3_vllm_container_host_port/v1"
+    -e OPENAI_API_KEY="vllm-chat-model-1-sample-key;vllm-chat-model-2-sample-key;vllm-chat-model-3-sample-key"
     -e DEFAULT_MODELS="$chat_model_1_name"
     -e RAG_EMBEDDING_MODEL="sentence-transformers/paraphrase-MiniLM-L6-v2"
     -e ENABLE_OLLAMA_API="false"
