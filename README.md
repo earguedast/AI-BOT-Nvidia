@@ -79,6 +79,12 @@ Install Nvidia-drivers ubuntu 2404
   ./chat-model-dual-setup.sh
   ```
 
+ - **3 vllms Chat Model Setup**: This script sets up an environment with two chat LLMs. Meta Llama 3.1 8B Instruct and Qwen 2.5 Coder 32B Instruct have been chosen as the default chat AI models. Open WebUI provides a user-friendly GUI web interface with inferencing by vLLM.
+  ```
+    chmod +x chat-model-3-setup.sh
+  ./chat-model-3-setup.sh
+  ```
+
   - **Vision Model Setup**: This script sets up an environment with one vision language model. Qwen 2.5 VL 7B Instruct has been chosen as the default vision AI model. Open WebUI provides a user-friendly GUI web interface with inferencing by SGLang.
   ```
   ./vision-model-setup.sh
