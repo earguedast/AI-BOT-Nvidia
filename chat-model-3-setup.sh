@@ -300,6 +300,53 @@ else
     exit 1
 fi
 
+# Setup the vLLM Container with Chat Model 3 ($chat_model_3_name)
+echo "Setting up the vLLM Container with $chat_model_3_name..."
+chat_model_3_vllm_container_args_base=(
+    -d
+    --name vllm-chat-model-3
+    -p $chat_model_3_vllm_container_host_port:8000
+    --runtime nvidia
+    --gpus all
+    -v $HOME/ai_models:/ai_models
+    --ipc=host
+    $chat_model_3_vllm_container_image
+    --model /ai_models/$chat_model_3_huggingface_download_local_sub_directory
+	--tensor-parallel-size $chat_model_3_vllm_gpu_count
+    --served-model-name "$chat_model_3_name"
+    --gpu_memory_utilization=$chat_model_3_vllm_gpu_memory_utilization
+)
+
+chat_model_3_vllm_container_args_with_max_context_length=(
+    "${chat_model_3_vllm_container_args_base[@]}"
+    --max_model_len=$chat_model_1_vllm_max_context_length
+)
+chat_model_3_vllm_container_args_without_max_context_length=(
+    "${chat_model_3_vllm_container_args_base[@]}"
+)
+if [ -z "$chat_model_3_vllm_max_context_length" ]; then
+    echo "No Max Context Length Has Been Provided, the Model Default Will Be Used..."
+    if docker info -f "{{println .SecurityOptions}}" 2>/dev/null | grep -q rootless; then
+        docker run "${chat_model_3_vllm_container_args_without_max_context_length[@]}"
+    else
+        sudo docker run "${chat_model_3_vllm_container_args_without_max_context_length[@]}"
+    fi
+else
+    echo "A Max Context Length of $chat_model_3_vllm_max_context_length Has Been Provided..."
+    if docker info -f "{{println .SecurityOptions}}" 2>/dev/null | grep -q rootless; then
+        docker run "${chat_model_3_vllm_container_args_with_max_context_length[@]}"
+    else
+        sudo docker run "${chat_model_3_vllm_container_args_with_max_context_length[@]}"
+    fi
+fi
+
+if [[ $? -eq 0 ]]; then
+    echo "The vLLM Container with $chat_model_3_name has Started..."
+else
+    echo "ERROR: The vLLM Container with $chat_model_3_name Failed to Start!"
+    exit 1
+fi
+
 # Wait for the AI Model to Load ($chat_model_3_name)
 echo "The AI Model Loading Timeout is Set to $ai_model_loading_timeout Second(s)."
 echo "Waiting for $chat_model_3_name to Load..."
