@@ -15,18 +15,21 @@ chat_model_1_name="Meta Llama 3.1, 8B"
 chat_model_1_huggingface_download_source="RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8-dynamic"
 chat_model_1_vllm_max_context_length=8192
 chat_model_1_vllm_gpu_memory_utilization=0.3
+chat_model_1_vllm_gpu_count=8
 chat_model_1_vllm_container_image="vllm/vllm-openai:v0.8.5.post1"
 chat_model_1_vllm_container_host_port=8001
 chat_model_2_name="Qwen 2.5 Coder, 32B"
 chat_model_2_huggingface_download_source="Qwen/Qwen2.5-Coder-32B-Instruct-AWQ"
 chat_model_2_vllm_max_context_length=8192
 chat_model_2_vllm_gpu_memory_utilization=0.9
+chat_model_2_vllm_gpu_count=8
 chat_model_2_vllm_container_image="vllm/vllm-openai:v0.8.5.post1"
 chat_model_2_vllm_container_host_port=8002
 chat_model_3_name="gemma 3, 1B"
 chat_model_3_huggingface_download_source="google/gemma-3-1b-it"
 chat_model_3_vllm_max_context_length=8192
 chat_model_3_vllm_gpu_memory_utilization=0.9
+chat_model_3_vllm_gpu_count=8
 chat_model_3_vllm_container_image="vllm/vllm-openai:v0.8.5.post1"
 chat_model_3_vllm_container_host_port=8003
 open_webui_container_image="ghcr.io/open-webui/open-webui:cuda"
@@ -57,19 +60,22 @@ done
 echo "Defining the Hugging Face Download Local Sub-Directories..."
 chat_model_1_huggingface_download_local_sub_directory="${chat_model_1_huggingface_download_source##*/}"
 chat_model_2_huggingface_download_local_sub_directory="${chat_model_2_huggingface_download_source##*/}"
+chat_model_3_huggingface_download_local_sub_directory="${chat_model_3_huggingface_download_source##*/}"
 
 # Download the AI Chat Models
 echo "Downloading the AI Chat Models..."
 if $hugging_face_access_token; then
-    HF_TOKEN=$hugging_face_access_token HF_HUB_ENABLE_HF_TRANSFER=1 huggingface-cli download $chat_model_1_huggingface_download_source --local-dir $HOME/ai_models/$chat_model_1_huggingface_download_local_sub_directory
-    HF_TOKEN=$hugging_face_access_token HF_HUB_ENABLE_HF_TRANSFER=1 huggingface-cli download $chat_model_2_huggingface_download_source --local-dir $HOME/ai_models/$chat_model_2_huggingface_download_local_sub_directory
+    HF_TOKEN=$hugging_face_access_token HF_HUB_ENABLE_HF_TRANSFER=1 hf download $chat_model_1_huggingface_download_source --local-dir $HOME/ai_models/$chat_model_1_huggingface_download_local_sub_directory
+    HF_TOKEN=$hugging_face_access_token HF_HUB_ENABLE_HF_TRANSFER=1 hf download $chat_model_2_huggingface_download_source --local-dir $HOME/ai_models/$chat_model_2_huggingface_download_local_sub_directory
+	HF_TOKEN=$hugging_face_access_token HF_HUB_ENABLE_HF_TRANSFER=1 hf download $chat_model_3_huggingface_download_source --local-dir $HOME/ai_models/$chat_model_3_huggingface_download_local_sub_directory
 else
-    HF_HUB_ENABLE_HF_TRANSFER=1 huggingface-cli download $chat_model_1_huggingface_download_source --local-dir $HOME/ai_models/$chat_model_1_huggingface_download_local_sub_directory
-    HF_HUB_ENABLE_HF_TRANSFER=1 huggingface-cli download $chat_model_2_huggingface_download_source --local-dir $HOME/ai_models/$chat_model_2_huggingface_download_local_sub_directory
+    HF_HUB_ENABLE_HF_TRANSFER=1 hf download $chat_model_1_huggingface_download_source --local-dir $HOME/ai_models/$chat_model_1_huggingface_download_local_sub_directory
+    HF_HUB_ENABLE_HF_TRANSFER=1 hf download $chat_model_2_huggingface_download_source --local-dir $HOME/ai_models/$chat_model_2_huggingface_download_local_sub_directory
+	HF_HUB_ENABLE_HF_TRANSFER=1 hf download $chat_model_3_huggingface_download_source --local-dir $HOME/ai_models/$chat_model_3_huggingface_download_local_sub_directory
 fi
 
 # Stop and Remove Preexisting Private AI Containers
-private_ai_containers=("open-webui-1" "vllm-chat-model-1" "vllm-chat-model-2" "sglang-vision-model-1" "vllm-reasoning-model-1" "sd-webui-forge-1")
+private_ai_containers=("open-webui-1" "vllm-chat-model-1" "vllm-chat-model-2" "vllm-chat-model-3" "sglang-vision-model-1" "vllm-reasoning-model-1" "sd-webui-forge-1")
 if [ "$stop_and_remove_preexisting_private_ai_containers" = "true" ]; then
     echo "Stopping Preexisting Private AI Containers..."
     if docker info -f "{{println .SecurityOptions}}" 2>/dev/null | grep -q rootless; then
@@ -102,6 +108,7 @@ chat_model_1_vllm_container_args_base=(
     --ipc=host
     $chat_model_1_vllm_container_image
     --model /ai_models/$chat_model_1_huggingface_download_local_sub_directory
+	--tensor-parallel-size $chat_model_1_vllm_gpu_count
     --served-model-name "$chat_model_1_name"
     --gpu_memory_utilization=$chat_model_1_vllm_gpu_memory_utilization
 )
@@ -176,6 +183,7 @@ chat_model_2_vllm_container_args_base=(
     --ipc=host
     $chat_model_2_vllm_container_image
     --model /ai_models/$chat_model_2_huggingface_download_local_sub_directory
+	--tensor-parallel-size $chat_model_2_vllm_gpu_count
     --served-model-name "$chat_model_2_name"
     --gpu_memory_utilization=$chat_model_2_vllm_gpu_memory_utilization
 )
@@ -251,6 +259,7 @@ chat_model_3_vllm_container_args_base=(
     --ipc=host
     $chat_model_3_vllm_container_image
     --model /ai_models/$chat_model_3_huggingface_download_local_sub_directory
+	--tensor-parallel-size $chat_model_3_vllm_gpu_count
     --served-model-name "$chat_model_3_name"
     --gpu_memory_utilization=$chat_model_3_vllm_gpu_memory_utilization
 )
