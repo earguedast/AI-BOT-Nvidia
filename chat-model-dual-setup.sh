@@ -9,6 +9,7 @@
 
 # Setup the Script Variables
 echo "Setting up the Script Variables..."
+#RedHatAI/Llama-3.3-70B-Instruct
 set -o nounset
 target_host=127.0.0.1
 chat_model_1_name="Meta Llama 3.1, 8B"
