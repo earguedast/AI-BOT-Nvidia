@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Private AI Setup Dream Guide - AI Chat Model Dual Setup
 # Summary: This script sets up an environment with 3 chat LLMs.
 ## Meta Llama 3.1 8B Instruct and Qwen 2.5 Coder 32B Instruct have been chosen as the default chat AI models.
@@ -13,8 +12,8 @@ set -o nounset
 target_host=127.0.0.1
 # chat_model_1_name="Meta Llama 3.1, 8B"
 # chat_model_1_huggingface_download_source="RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8-dynamic"
-chat_model_1_name="Qwen 3, 4B"
-chat_model_1_huggingface_download_source="RedHatAI/Qwen3-4B-FP8-dynamic"
+chat_model_1_name="Meta Llama 3.1, 8B"
+chat_model_1_huggingface_download_source="RedHatAI/Meta-Llama-3.1-8B-Instruct-FP8-dynamic"
 chat_model_1_vllm_max_context_length=8192
 chat_model_1_vllm_gpu_memory_utilization=0.3
 chat_model_1_vllm_gpu_count=8
@@ -22,10 +21,10 @@ chat_model_1_vllm_container_image="vllm/vllm-openai:v0.8.5.post1"
 chat_model_1_vllm_container_host_port=8001
 # chat_model_2_name="Qwen 3, 32B"
 # chat_model_2_huggingface_download_source="RedHatAI/Qwen3-32B-FP8-dynamic"
-chat_model_2_name="gemma 2, 9B"
+chat_model_2_name="Google gemma 2, 9B"
 chat_model_2_huggingface_download_source="RedHatAI/gemma-2-9b-it"
 chat_model_2_vllm_max_context_length=8192
-chat_model_2_vllm_gpu_memory_utilization=0.3
+chat_model_2_vllm_gpu_memory_utilization=0.5
 chat_model_2_vllm_gpu_count=8
 chat_model_2_vllm_container_image="vllm/vllm-openai:v0.8.5.post1"
 chat_model_2_vllm_container_host_port=8002
@@ -36,13 +35,13 @@ chat_model_2_vllm_container_host_port=8002
 chat_model_3_name="IBM Granite 3.1, 2B"
 chat_model_3_huggingface_download_source="RedHatAI/granite-3.1-2b-instruct-FP8-dynamic"
 chat_model_3_vllm_max_context_length=8192
-chat_model_3_vllm_gpu_memory_utilization=0.3
+chat_model_3_vllm_gpu_memory_utilization=0.6
 chat_model_3_vllm_gpu_count=8
 chat_model_3_vllm_container_image="vllm/vllm-openai:v0.8.5.post1"
 chat_model_3_vllm_container_host_port=8003
 open_webui_container_image="ghcr.io/open-webui/open-webui:cuda"
-open_webui_container_host_port=3000
-open_webui_container_specific_target_host="host.docker.internal"    # If using Rootless Docker, this value may need to be changed to the actual target host IP address.
+open_webui_container_host_port=8444
+open_webui_container_specific_target_host=198.18.130.0   # If using Rootless Docker, this value may need to be changed to the actual target host IP address.
 stop_and_remove_preexisting_private_ai_containers=true
 ai_model_loading_timeout=300
 hugging_face_access_token=
